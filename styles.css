@@ -14,7 +14,7 @@ body { background: var(--bg); color: var(--text); font-family: "Poppins", system
 .page { max-width: 560px; min-height: 100%; margin: 0 auto; padding: 20px 20px 28px; display: flex; flex-direction: column; }
 
 .brand { display: flex; align-items: center; gap: 10px; color: var(--mint); font-weight: 700; font-size: 1.6rem; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
-.logo { width: 40px; height: 40px; }
+.logo { width: 40px; height: 40px; display: block; object-fit: contain; }
 
 
 .btn { font: inherit; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.04em; border-radius: 22px; padding: 16px; margin-bottom: 14px; cursor: pointer; border: 2px solid var(--mint); }
@@ -30,7 +30,7 @@ body { background: var(--bg); color: var(--text); font-family: "Poppins", system
 .chatpage { padding: 12px; height: 100%; }
 .card { flex: 1; min-height: 0; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #101111; }
 .chathead { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #4a4d4d; }
-.avatar { width: 34px; height: 34px; background: var(--text); border-radius: 50%; padding: 3px; }
+.avatar { width: 38px; height: 38px; display: block; object-fit: contain; border-radius: 50%; }
 .name { font-weight: 600; }
 .typing { font-size: 0.8rem; color: var(--mint); }
 .exit { margin-left: auto; font: inherit; font-size: 0.85rem; color: var(--text); background: transparent; border: 1px solid var(--muted); border-radius: 14px; padding: 4px 12px; cursor: pointer; }

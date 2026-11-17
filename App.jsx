@@ -1,23 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import botImg from "./bot.png";
+import sunnyIcon from "./sunny-icon.png";
 
 const WELCOME =
   "Oi, eu sou a Sunny. Pode desabafar ou só bater um papo comigo. Como você está hoje?";
 const ERROR_TEXT = "Não consegui responder agora. Tente enviar de novo em instantes.";
 
 function Robot({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 120 120" role="img" aria-label="Sunny, o robô amigo">
-      <line x1="60" y1="12" x2="60" y2="26" stroke="#5be9b0" strokeWidth="4" strokeLinecap="round" />
-      <circle cx="60" cy="9" r="5" fill="#5be9b0" />
-      <path d="M24 68 C24 28 96 28 96 68" fill="none" stroke="#e8f7f0" strokeWidth="7" strokeLinecap="round" />
-      <rect x="15" y="58" width="13" height="28" rx="6.5" fill="#e8f7f0" />
-      <rect x="92" y="58" width="13" height="28" rx="6.5" fill="#e8f7f0" />
-      <rect x="28" y="36" width="64" height="60" rx="22" fill="#e8f7f0" />
-      <rect x="36" y="50" width="48" height="28" rx="14" fill="#5be9b0" />
-      <path d="M45 63 q5 -7 10 0 M65 63 q5 -7 10 0 M52 71 q8 7 16 0" fill="none" stroke="#0c0d0d" strokeWidth="3.5" strokeLinecap="round" />
-    </svg>
-  );
+  return <img className={className} src={sunnyIcon} alt="Sunny, o robô amigo" />;
 }
 
 function Home({ onTest, onMore }) {
