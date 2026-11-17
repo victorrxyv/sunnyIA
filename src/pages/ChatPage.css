@@ -38,9 +38,9 @@
 }
 
 .notice {
-  text-align: center;
+  justify-content: center;  
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 5px;
   flex-shrink: 0;
   margin: 0;
@@ -54,7 +54,7 @@
 
 .notice span {
   font-size: .80rem;
-}
+  line-height: 1.4;}
 
 .chat {
   flex: 1;
