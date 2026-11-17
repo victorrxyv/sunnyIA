@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import botImg from "./bot.png";
 
 const WELCOME =
   "Oi, eu sou a Sunny. Pode desabafar ou só bater um papo comigo. Como você está hoje?";
@@ -21,21 +22,35 @@ function Robot({ className }) {
 
 function Home({ onTest, onMore }) {
   return (
-    <div className="page home">
-      <header className="brand">
-        <Robot className="logo" />
-        <span>SUNNY.IA</span>
+    <div className="home">
+      <header className="topbar">
+        <div className="topbar-inner">
+          <Robot className="logo" />
+          <span className="brand-name">SUNNY.IA</span>
+        </div>
       </header>
-      <Robot className="hero" />
-      <h1>
-        <span className="mint">SUNNY:</span> SEU OMBRO AMIGO <span className="mint">VIRTUAL!</span>
-      </h1>
-      <p className="box">
-        Sunny é um bot criado para ser seu ombro amigo virtual. Este bot está sempre aqui para
-        ouvir, conversar e oferecer apoio quando você precisar.
-      </p>
-      <button className="btn outline" onClick={onTest}>TESTAR</button>
-      <button className="btn solid" onClick={onMore}>SAIBA MAIS</button>
+
+      <main className="hero-grid">
+        <section className="hero-text">
+          <h1>
+            <span className="mint">SUNNY:</span> SEU OMBRO AMIGO <span className="mint">VIRTUAL!</span>
+          </h1>
+          <p className="box">
+            Sunny é um bot criado para ser seu ombro amigo virtual. Este bot está sempre aqui para
+            ouvir, conversar e oferecer apoio quando você precisar.
+          </p>
+          <div className="actions">
+            <button className="btn outline" onClick={onTest}>TESTAR</button>
+            <button className="btn solid" onClick={onMore}>SAIBA MAIS</button>
+          </div>
+        </section>
+        <img
+          className="hero-img"
+          src={botImg}
+          alt="Sunny, o robô amigo, acenando ao lado de um celular com uma conversa"
+        />
+      </main>
+
       <footer>Desenvolvido por © Shaolean</footer>
     </div>
   );
