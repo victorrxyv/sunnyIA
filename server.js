@@ -1,17 +1,15 @@
 import "dotenv/config";
 import express from "express";
 import rateLimit from "express-rate-limit";
-import Anthropic from "@anthropic-ai/sdk";
-import { SYSTEM_PROMPT, CRISIS_ADDENDUM, CRISIS_RESOURCES } from "./prompt.js";
+import { SYSTEM_PROMPT, CRISIS_ADDENDUM, CRISIS_RESOURCES, EMPTY_REPLY } from "./prompt.js";
 import { detectRisk } from "./risk.js";
 import { cleanMessages } from "./messages.js";
+import { streamGenerate, CHAT_MODEL } from "./gemini.js";
 
 const app = express();
-const client = new Anthropic(); // usa ANTHROPIC_API_KEY do ambiente
-const MODEL = process.env.SUNNY_MODEL || "claude-sonnet-5-5";
 
 app.use(express.json({ limit: "20kb" }));
-app.use("/api/", rateLimit({ windowMs: 60_000, limit: 20 }));
+app.use("/api/", rateLimit({ windowMs: 60_000, limit: 10 }));
 
 app.post("/api/chat", async (req, res) => {
   const messages = cleanMessages(req.body?.messages);
@@ -25,20 +23,19 @@ app.post("/api/chat", async (req, res) => {
   const send = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
 
   try {
-    const risky = await detectRisk(client, messages);
+    const risky = await detectRisk(messages);
     if (risky) send({ text: CRISIS_RESOURCES + "\n\n" });
 
-    const stream = client.messages.stream({
-      model: MODEL,
-      max_tokens: 800,
+    const total = await streamGenerate({
+      model: CHAT_MODEL,
       system: risky ? SYSTEM_PROMPT + CRISIS_ADDENDUM : SYSTEM_PROMPT,
       messages,
+      onText: (text) => send({ text }),
     });
-    stream.on("text", (text) => send({ text }));
-    await stream.finalMessage();
+    if (!total) send({ text: EMPTY_REPLY });
   } catch (err) {
     // não registra o conteúdo das conversas, só o erro
-    console.error("Erro no chat:", err.status ?? "", err.message);
+    console.error("Erro no chat:", err.message);
     send({ error: "A Sunny está com dificuldade agora. Tente de novo em instantes." });
   }
 

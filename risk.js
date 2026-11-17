@@ -1,28 +1,34 @@
-const RISK_MODEL = process.env.SUNNY_RISK_MODEL || "claude-haiku-5-5";
+import { generate, RISK_MODEL } from "./gemini.js";
 
 const INSTRUCTION = `Você analisa conversas de apoio emocional. Responda SOMENTE com JSON.
 {"risco":"alto"} se a pessoa expressa ideias de suicídio, desejo de morrer, intenção de se machucar ou perigo imediato (para si ou para outros).
 Caso contrário: {"risco":"nenhum"}.`;
 
-export async function detectRisk(client, messages) {
+// Rede de segurança: funciona mesmo se o modelo falhar ou o limite grátis acabar.
+const KEYWORDS =
+  /suicid|me matar|quero morrer|vou me matar|tirar (a )?minha vida|acabar com (tudo|minha vida)|n[aã]o quero (mais )?viver|me machucar|me cortar|automutila|overdose/i;
+
+export async function detectRisk(messages) {
+  const last = messages[messages.length - 1]?.content ?? "";
+  if (KEYWORDS.test(last)) return true;
+
   try {
     const transcript = messages
       .slice(-6)
       .map((m) => `${m.role === "user" ? "Pessoa" : "Sunny"}: ${m.content}`)
       .join("\n");
 
-    const res = await client.messages.create({
+    const text = await generate({
       model: RISK_MODEL,
-      max_tokens: 30,
       system: INSTRUCTION,
       messages: [{ role: "user", content: transcript }],
+      maxOutputTokens: 512,
+      json: true,
     });
-
-    const text = res.content.find((b) => b.type === "text")?.text ?? "";
     const json = text.match(/\{[\s\S]*\}/)?.[0];
     return JSON.parse(json).risco === "alto";
   } catch (err) {
     console.error("Falha na triagem de risco:", err.message);
-    return false; // o system prompt principal também trata situações de crise
+    return false; // o prompt principal também trata situações de crise
   }
 }

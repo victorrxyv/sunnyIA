@@ -21,3 +21,5 @@ ATENÇÃO: esta conversa pode envolver risco à vida da pessoa. As informações
 export const CRISIS_RESOURCES = `Sinto muito que você esteja passando por isso, e fico feliz que tenha me contado. Você não precisa enfrentar isso sozinho(a).
 
 Se estiver em perigo agora, ligue 192 (SAMU). Para conversar com alguém neste momento, o CVV atende 24h pelo 188 (ligação gratuita) e pelo chat em cvv.org.br.`;
+
+export const EMPTY_REPLY = `Estou aqui com você. Não consegui formular uma resposta agora, pode tentar escrever de outro jeito? Se precisar de alguém neste momento, ligue 188 (CVV) ou 192 (SAMU).`;
