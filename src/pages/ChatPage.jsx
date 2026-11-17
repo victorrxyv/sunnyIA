@@ -79,7 +79,6 @@ export default function ChatPage() {
         <header className="chathead">
           <Robot className="avatar" />
           <span className="name">Sunny.IA</span>
-          {busy && <span className="typing">digitando…</span>}
           <button className="exit" onClick={() => navigate('/')} aria-label="Sair da conversa">Sair</button>
         </header>
         <p className="notice">
