@@ -1,4 +1,7 @@
-.chatpage { padding: 12px; height: 100%; }
+.chatpage { 
+  padding: 12px; 
+  height: 100%; 
+}
 
 .card {
   flex: 1;
@@ -11,7 +14,14 @@
   background: #101111;
 }
 
-.chathead { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #4a4d4d; }
+.chathead { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  padding: 10px 14px; 
+  background: #4a4d4d; 
+}
+
 .name { font-weight: 600; }
 .typing { font-size: 0.8rem; color: var(--mint); }
 
@@ -28,12 +38,14 @@
 }
 
 .notice {
-  margin: 0;
+  margin: 10px;
   padding: 8px 14px;
-  font-size: 0.75rem;
+  font-size: .85rem;
   line-height: 1.4;
-  color: var(--muted);
+  color: black;
   border-bottom: 1px solid var(--line);
+  background: orange;
+  border-radius: 10px;
 }
 
 .chat {
@@ -54,5 +66,15 @@
   font-size: 0.95rem;
 }
 
-.msg.assistant { align-self: flex-start; background: var(--bubble); border-radius: 18px 18px 18px 6px; }
-.msg.user { align-self: flex-end; background: var(--teal); color: #04120e; border-radius: 18px 18px 6px 18px; }
+.msg.assistant { 
+  align-self: flex-start; 
+  background: var(--bubble); 
+  border-radius: 18px 18px 18px 6px; 
+}
+
+.msg.user { 
+  align-self: flex-end; 
+  background: var(--teal); 
+  color: #04120e; 
+  border-radius: 18px 18px 6px 18px; 
+}
