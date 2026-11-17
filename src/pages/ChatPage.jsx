@@ -83,7 +83,7 @@ export default function ChatPage() {
         </header>
         <main className="chat" aria-live="polite">
           <p className="notice">
-          <span class="material-symbols-outlined">warning</span> A/O Sunny é uma IA e não substitui ajuda profissional. Em crise: CVV 188 ou SAMU 192.
+          <span><i className="fa-solid fa-triangle-exclamation" /></span> A/O Sunny é uma IA e não substitui ajuda profissional. Em crise: CVV 188 ou SAMU 192.
           </p>
           {messages.map((m, i) => (
             <div key={i} className={'msg ' + m.role}>
