@@ -81,10 +81,10 @@ export default function ChatPage() {
           <span className="name">Sunny.IA</span>
           <button className="exit" onClick={() => navigate('/')} aria-label="Sair da conversa">Sair</button>
         </header>
-        <p className="notice">
-          A Sunny é uma IA e não substitui ajuda profissional. Em crise: CVV 188 ou SAMU 192.
-        </p>
         <main className="chat" aria-live="polite">
+          <p className="notice">
+            A Sunny é uma IA e não substitui ajuda profissional. Em crise: CVV 188 ou SAMU 192.
+          </p>
           {messages.map((m, i) => (
             <div key={i} className={'msg ' + m.role}>
               {m.content || 'Digitando…'}
