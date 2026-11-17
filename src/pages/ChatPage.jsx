@@ -5,7 +5,7 @@ import Robot from '../components/Robot.jsx'
 import Composer from '../components/Composer.jsx'
 
 const WELCOME =
-  'Oi, eu sou a Sunny. Pode desabafar ou só bater um papo comigo. Como você está hoje?'
+  'Olá! eu sou a/o Sunny. Pode desabafar ou só bater um papo comigo. Como você está hoje?'
 const ERROR_TEXT = 'Não consegui responder agora. Tente enviar de novo em instantes.'
 
 export default function ChatPage() {
