@@ -1,0 +1,37 @@
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--line);
+}
+
+.composer textarea {
+  flex: 1;
+  resize: none;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bubble);
+  border: 0;
+  border-radius: 18px;
+  padding: 10px 14px;
+  max-height: 120px;
+}
+
+.composer textarea::placeholder { color: #98a39d; }
+
+.composer button {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--teal);
+  color: #04120e;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.composer button:disabled { opacity: 0.45; cursor: default; }

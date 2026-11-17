@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import path from "node:path";
 import rateLimit from "express-rate-limit";
 import { SYSTEM_PROMPT, CRISIS_ADDENDUM, CRISIS_RESOURCES, EMPTY_REPLY } from "./prompt.js";
 import { detectRisk, keywordRisk } from "./risk.js";
@@ -68,6 +69,8 @@ app.post("/api/chat", async (req, res) => {
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("dist"));
+  // rotas do React Router (/chat, /sobre) caem no index.html
+  app.get("*", (_req, res) => res.sendFile(path.resolve("dist/index.html")));
 }
 
 const port = process.env.PORT || 3001;

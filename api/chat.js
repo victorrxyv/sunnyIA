@@ -1,9 +1,9 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { SYSTEM_PROMPT, CRISIS_ADDENDUM, CRISIS_RESOURCES, EMPTY_REPLY } from "../prompt.js";
-import { detectRisk, keywordRisk } from "../risk.js";
-import { cleanMessages } from "../messages.js";
-import { streamGenerate, CHAT_MODEL } from "../gemini.js";
+import { SYSTEM_PROMPT, CRISIS_ADDENDUM, CRISIS_RESOURCES, EMPTY_REPLY } from "../server/prompt.js";
+import { detectRisk, keywordRisk } from "../server/risk.js";
+import { cleanMessages } from "../server/messages.js";
+import { streamGenerate, CHAT_MODEL } from "../server/gemini.js";
 
 // Rate limit compartilhado entre as instâncias (Upstash Redis).
 // Sem as variáveis do Upstash, o limite fica desligado.

@@ -1,0 +1,15 @@
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--mint);
+  font-weight: 700;
+  font-size: 1.6rem;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.about h2 { font-size: 1.05rem; color: var(--mint); margin: 22px 0 4px; }
+.about p { margin: 0; line-height: 1.6; color: var(--muted); }
+.about strong { color: var(--text); }
+.about .btn:first-of-type { margin-top: 28px; }

@@ -1,0 +1,51 @@
+:root {
+  --bg: #0c0d0d;
+  --mint: #5be9b0;
+  --teal: #2aa793;
+  --bubble: #262828;
+  --line: #3d4141;
+  --text: #ffffff;
+  --muted: #b9c5bf;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+button:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--mint);
+  outline-offset: 2px;
+}
+
+/* ── PÁGINA (layout base) ── */
+.page {
+  max-width: 560px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 20px 20px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── BOTÕES ── */
+.btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  border-radius: 22px;
+  padding: 16px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  border: 2px solid var(--mint);
+}
+
+.btn.outline { background: transparent; color: var(--mint); }
+.btn.solid { background: var(--mint); color: var(--bg); }
+.btn:hover { filter: brightness(1.1); }
