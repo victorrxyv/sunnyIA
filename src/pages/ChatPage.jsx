@@ -88,7 +88,7 @@ export default function ChatPage() {
         <main className="chat" aria-live="polite">
           {messages.map((m, i) => (
             <div key={i} className={'msg ' + m.role}>
-              {m.content || '…'}
+              {m.content || 'Digitando…'}
             </div>
           ))}
           <div ref={endRef} />
