@@ -110,6 +110,7 @@ function Chat({ onExit }) {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
+      let got = false;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -121,9 +122,11 @@ function Chat({ onExit }) {
           const data = part.replace(/^data: /, "");
           if (data === "[DONE]") continue;
           const { text: chunk, error } = JSON.parse(data);
+          if (chunk || error) got = true;
           appendToLast(chunk ?? error ?? "");
         }
       }
+      if (!got) throw new Error("vazio");
     } catch {
       setMessages((prev) => {
         const copy = [...prev];

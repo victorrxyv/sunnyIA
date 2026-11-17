@@ -1,7 +1,11 @@
 // Cliente mínimo da API do Gemini (sem SDK, só fetch).
 const BASE = process.env.GEMINI_BASE_URL || "https://generativelanguage.googleapis.com/v1beta/models";
 
-export const CHAT_MODEL = process.env.GEMINI_MODEL || "gemini-flash-latest";
+export const CHAT_MODEL = process.env.GEMINI_MODEL || "gemini-flash-lite-latest";
+// Limites de tempo: se o Gemini não responder, falha rápido em vez de travar a função.
+const STREAM_TIMEOUT = Number(process.env.GEMINI_STREAM_TIMEOUT_MS) || 25000;
+const RISK_TIMEOUT = Number(process.env.GEMINI_RISK_TIMEOUT_MS) || 5000;
+
 export const RISK_MODEL = process.env.GEMINI_RISK_MODEL || "gemini-flash-lite-latest";
 
 // Conversas de apoio emocional podem citar temas pesados: só bloqueia o que for extremo.
@@ -52,17 +56,19 @@ export async function generate({ model, system, messages, maxOutputTokens = 512,
     method: "POST",
     headers: headers(),
     body: JSON.stringify(buildBody({ system, messages, maxOutputTokens, json })),
+    signal: AbortSignal.timeout(RISK_TIMEOUT),
   });
   if (!res.ok) throw new Error(`Gemini ${res.status}: ${(await res.text()).slice(0, 300)}`);
   return textOf(await res.json());
 }
 
 // Resposta em streaming. Chama onText a cada pedaço e devolve o total de caracteres.
-export async function streamGenerate({ model, system, messages, onText, maxOutputTokens = 2048 }) {
+export async function streamGenerate({ model, system, messages, onText, maxOutputTokens = 1024 }) {
   const res = await fetch(`${BASE}/${model}:streamGenerateContent?alt=sse`, {
     method: "POST",
     headers: headers(),
     body: JSON.stringify(buildBody({ system, messages, maxOutputTokens, json: false })),
+    signal: AbortSignal.timeout(STREAM_TIMEOUT),
   });
   if (!res.ok || !res.body) {
     throw new Error(`Gemini ${res.status}: ${(await res.text()).slice(0, 300)}`);

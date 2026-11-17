@@ -48,11 +48,15 @@ export default async function handler(req, res) {
     if (!closed) res.write(`data: ${JSON.stringify(data)}\n\n`);
   };
 
+  const t0 = Date.now();
+  let tRisk = 0;
+  let tFirst = 0;
   const quick = keywordRisk(messages);
   const riskPromise = quick ? Promise.resolve(true) : detectRisk(messages);
   const pending = [];
   let decided = false;
   riskPromise.then((risky) => {
+    tRisk = Date.now() - t0;
     decided = true;
     if (risky) send({ text: CRISIS_RESOURCES + "\n\n" });
     pending.splice(0).forEach((text) => send({ text }));
@@ -63,13 +67,17 @@ export default async function handler(req, res) {
       model: CHAT_MODEL,
       system: quick ? SYSTEM_PROMPT + CRISIS_ADDENDUM : SYSTEM_PROMPT,
       messages,
-      onText: (text) => (decided ? send({ text }) : pending.push(text)),
+      onText: (text) => {
+        if (!tFirst) tFirst = Date.now() - t0;
+        decided ? send({ text }) : pending.push(text);
+      },
     });
     await riskPromise;
+    console.log(`[chat] triagem ${tRisk}ms, primeiro texto ${tFirst}ms, total ${Date.now() - t0}ms`);
     if (!total) send({ text: EMPTY_REPLY });
   } catch (err) {
     // não registra o conteúdo das conversas, só o erro
-    console.error("Erro no chat:", err.message);
+    console.error(`Erro no chat (${Date.now() - t0}ms):`, err.message);
     await riskPromise;
     send({ error: "A Sunny está com dificuldade agora. Tente de novo em instantes." });
   }

@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import { SYSTEM_PROMPT, CRISIS_ADDENDUM, CRISIS_RESOURCES, EMPTY_REPLY } from "./prompt.js";
-import { detectRisk } from "./risk.js";
+import { detectRisk, keywordRisk } from "./risk.js";
 import { cleanMessages } from "./messages.js";
 import { streamGenerate, CHAT_MODEL } from "./gemini.js";
 
@@ -20,25 +20,48 @@ app.post("/api/chat", async (req, res) => {
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
   });
-  const send = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
+  // Triagem e resposta rodam ao mesmo tempo: o texto só espera a triagem se ela
+  // ainda não terminou, então o tempo total é o do mais lento, não a soma.
+  let closed = false;
+  const send = (data) => {
+    if (!closed) res.write(`data: ${JSON.stringify(data)}\n\n`);
+  };
+
+  const t0 = Date.now();
+  let tRisk = 0;
+  let tFirst = 0;
+  const quick = keywordRisk(messages);
+  const riskPromise = quick ? Promise.resolve(true) : detectRisk(messages);
+  const pending = [];
+  let decided = false;
+  riskPromise.then((risky) => {
+    tRisk = Date.now() - t0;
+    decided = true;
+    if (risky) send({ text: CRISIS_RESOURCES + "\n\n" });
+    pending.splice(0).forEach((text) => send({ text }));
+  });
 
   try {
-    const risky = await detectRisk(messages);
-    if (risky) send({ text: CRISIS_RESOURCES + "\n\n" });
-
     const total = await streamGenerate({
       model: CHAT_MODEL,
-      system: risky ? SYSTEM_PROMPT + CRISIS_ADDENDUM : SYSTEM_PROMPT,
+      system: quick ? SYSTEM_PROMPT + CRISIS_ADDENDUM : SYSTEM_PROMPT,
       messages,
-      onText: (text) => send({ text }),
+      onText: (text) => {
+        if (!tFirst) tFirst = Date.now() - t0;
+        decided ? send({ text }) : pending.push(text);
+      },
     });
+    await riskPromise;
+    console.log(`[chat] triagem ${tRisk}ms, primeiro texto ${tFirst}ms, total ${Date.now() - t0}ms`);
     if (!total) send({ text: EMPTY_REPLY });
   } catch (err) {
     // não registra o conteúdo das conversas, só o erro
-    console.error("Erro no chat:", err.message);
+    console.error(`Erro no chat (${Date.now() - t0}ms):`, err.message);
+    await riskPromise;
     send({ error: "A Sunny está com dificuldade agora. Tente de novo em instantes." });
   }
 
+  closed = true;
   res.write("data: [DONE]\n\n");
   res.end();
 });
