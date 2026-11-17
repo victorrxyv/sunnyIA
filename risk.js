@@ -8,9 +8,11 @@ Caso contrário: {"risco":"nenhum"}.`;
 const KEYWORDS =
   /suicid|me matar|quero morrer|vou me matar|tirar (a )?minha vida|acabar com (tudo|minha vida)|n[aã]o quero (mais )?viver|me machucar|me cortar|automutila|overdose/i;
 
+export const keywordRisk = (messages) =>
+  KEYWORDS.test(messages[messages.length - 1]?.content ?? "");
+
 export async function detectRisk(messages) {
-  const last = messages[messages.length - 1]?.content ?? "";
-  if (KEYWORDS.test(last)) return true;
+  if (keywordRisk(messages)) return true;
 
   try {
     const transcript = messages
