@@ -19,8 +19,7 @@ body {
 }
 
 button:focus-visible, textarea:focus-visible {
-  outline: 3px solid var(--mint);
-  outline-offset: 2px;
+  outline: none;
 }
 
 /* ── PÁGINA (layout base) ── */

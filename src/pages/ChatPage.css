@@ -43,9 +43,9 @@
   padding: 8px 14px;
   font-size: .85rem;
   line-height: 1.4;
-  color: black;
+  color: #d2b658;
   border-bottom: 1px solid var(--line);
-  background: orange;
+  background: #22241e;
   border-radius: 10px;
 }
 
